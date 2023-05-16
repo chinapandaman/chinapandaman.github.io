@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sonar Analysis Against PyPDFForm | Jinge Li&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+  
+  <meta name="description" content="MotivationWhile working on PyPDFForm, I implemented many different mechanisms to ensure the code quality of the project. Some of these include:  Testing using pytest. Uploading coverage data to codeco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sonar Analysis Against PyPDFForm">
+<meta property="og:url" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/index.html">
+<meta property="og:site_name" content="Jinge Li&#39;s Blog">
+<meta property="og:description" content="MotivationWhile working on PyPDFForm, I implemented many different mechanisms to ensure the code quality of the project. Some of these include:  Testing using pytest. Uploading coverage data to codeco">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/1.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/2.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/3.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/4.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/5.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/6.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/7.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/8.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/9.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/10.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/11.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/12.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/13.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/14.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/15.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/16.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/17.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/18.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/19.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/20.png">
+<meta property="article:published_time" content="2023-05-16T01:33:03.000Z">
+<meta property="article:modified_time" content="2023-05-16T01:39:37.395Z">
+<meta property="article:author" content="Jinge Li">
+<meta property="article:tag" content="Coding">
+<meta property="article:tag" content="Static Analysis">
+<meta property="article:tag" content="Sonar">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chinapandaman.github.io/2023/05/15/sonar-blog-1/1.png"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Jinge Li's Blog" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1 id="title">
+    <a href="/">Jinge Li&#39;s Blog</a>
+  </h1>
+  <nav>
+    
+    
+      
+      <a class="nav-link" href="/">Home</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" href="/archives">Archives</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" target="_blank" rel="noopener" href="https://github.com/chinapandaman">GitHub</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" href="/atom.xml">RSS</a>
+    
+    
+  </nav>
+</header>
+
+    <div id="content">
+      <article id="post-sonar-blog-1" class="article article-type-post" itemprop="blogPost" itemscope>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 class="article-title" itemprop="headline name">
+      Sonar Analysis Against PyPDFForm
+    </h2>
+  
+
+
+        <div class="article-meta">
+          <time class="article-date" datetime="2023-05-16T01:33:03.000Z" itemprop="datePublished">May 15, 2023, 8:33 PM</time>
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+        <h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>While working on <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm">PyPDFForm</a>, I implemented many different mechanisms to ensure the code quality of the project. Some of these include:</p>
+<ul>
+<li>Testing using <a target="_blank" rel="noopener" href="https://pytest.org/">pytest</a>.</li>
+<li>Uploading coverage data to <a target="_blank" rel="noopener" href="https://app.codecov.io/gh/chinapandaman/PyPDFForm">codecov</a>.</li>
+<li>Formatting the code using <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-black-isort.yml">black&#x2F;isort</a>.</li>
+<li>Linting using <a target="_blank" rel="noopener" href="https://pypi.org/project/pylint/">pylint</a>.</li>
+</ul>
+<p>Recently I have learned about the community loved static analysis tool <a target="_blank" rel="noopener" href="https://www.sonarsource.com/products/sonarqube/">SonarQube</a>. So I ask myself what kind of static analysis result I would get from it, especially with all these mechanisms I already have to ensure code quality. In this blog, I will find out answers to this exact question.</p>
+<span id="more"></span>
+
+<h3 id="Setup-Sonar"><a href="#Setup-Sonar" class="headerlink" title="Setup Sonar"></a>Setup Sonar</h3><p>For now all I want is to see some analysis results from Sonar for PyPDFForm. There is no intention of making Sonar part of the CI pipeline yet. So there is no need of hosting Sonar on a remote server, instead all I want is to simply host Sonar locally and run a couple scans. Luckily Sonar does provide a way of doing that in <a target="_blank" rel="noopener" href="https://docs.sonarqube.org/latest/try-out-sonarqube/">this</a> documentation.</p>
+<p>The first step is to setup a local host for Sonar. As part of the prerequisites hosting Sonar requires Java 17 for version 10.0, which is something that’s already installed on my machine.</p>
+<p><img src="/2023/05/15/sonar-blog-1/1.png"></p>
+<p>The next thing is to download the zip file for Sonar host from <a target="_blank" rel="noopener" href="https://www.sonarsource.com/products/sonarqube/downloads/">here</a>. Here I downloaded the community edition of it.</p>
+<p>After unzipping the zip file it is pretty simple to start the server by running the following:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;path_to_unzipped_folder&gt;/bin/&lt;OS&gt;/sonar.sh console</span><br></pre></td></tr></table></figure>
+
+<p>In my case I’m on a Surface Pro running Ubuntu. So the command would look like:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;path_to_unzipped_folder&gt;/bin/linux-x86-64/sonar.sh console</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/05/15/sonar-blog-1/2.png"></p>
+<p>Execute the command and wait for it to finish spinning up the server. It is done when these prompts show up:</p>
+<p><img src="/2023/05/15/sonar-blog-1/3.png"></p>
+<p>Now if I go to <a target="_blank" rel="noopener" href="http://localhost:9000/">http://localhost:9000/</a>, I will see this page which indicates Sonar is up and running locally:</p>
+<p><img src="/2023/05/15/sonar-blog-1/4.png"></p>
+<p>Enter admin&#x2F;admin for login&#x2F;password, it will then redirect me to a page where I need to change the admin password. Once done Sonar host will be ready to use.</p>
+<p><img src="/2023/05/15/sonar-blog-1/5.png"></p>
+<p>Now that I have the host setup, the next thing I need is the scanner that actually scans the code. For my purpose I’m downloading the generic Sonar scanner from <a target="_blank" rel="noopener" href="https://docs.sonarqube.org/latest/analyzing-source-code/scanners/sonarscanner/">here</a>. Unzip the zip file and it will be ready to use.</p>
+<p><img src="/2023/05/15/sonar-blog-1/6.png"></p>
+<h3 id="Analyze-PyPDFForm"><a href="#Analyze-PyPDFForm" class="headerlink" title="Analyze PyPDFForm"></a>Analyze PyPDFForm</h3><p>I have both the Sonar host and Sonar scanner setup. It’s time to run my first scan against PyPDFForm.</p>
+<p>Before I start scanning, I need to first generate a token from the Sonar host given that’s how Sonar authenticates. The token can be generated from <a target="_blank" rel="noopener" href="http://localhost:9000/account/security">this page</a>. Here I named my token <code>local</code> and selected the type <code>User Token</code>:</p>
+<p><img src="/2023/05/15/sonar-blog-1/7.png"></p>
+<p>Once I have my token it can be used as part of the Sonar scanner command. Here is what it typically looks like:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;path_to_unzipped_scanner_folder&gt;/bin/sonar-scanner -Dsonar.host.url=http://localhost:9000/ -Dsonar.token=&lt;generated_token&gt; -Dsonar.projectKey=&lt;project_key&gt; -Dsonar.projectName=&lt;project_display_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>In my case, the command looks like this:</p>
+<p><img src="/2023/05/15/sonar-blog-1/8.png"></p>
+<p>Let’s look at this command piece by piece:</p>
+<ul>
+<li><code>-Dsonar.host.url</code> specifies the host URL of the Sonar server, which in my case is the local host.</li>
+<li><code>-Dsonar.token</code> is the token I just generated.</li>
+<li><code>-Dsonar.projectKey</code> is the unique identifier of the project.</li>
+<li><code>-Dsonar.projectName</code> is the display name of the project.</li>
+</ul>
+<p>Execute the command and the scanner will kick off the scan. Wait until it finishes:</p>
+<p><img src="/2023/05/15/sonar-blog-1/9.png"></p>
+<p>Now if I refresh the Sonar host’s home page, I can see my new project show up there:</p>
+<p><img src="/2023/05/15/sonar-blog-1/10.png"></p>
+<p>If I click on the project and open up its dashboard I can see the analysis result of my first scan:</p>
+<p><img src="/2023/05/15/sonar-blog-1/11.png"></p>
+<p>So the good news is that my project seems to have no bugs, vulnerabilities, security hotspots, and duplications. All good stuffs and I can see how all those code quality mechanisms have helped me to achieve these.</p>
+<p>The not so good news are:</p>
+<ul>
+<li>The coverage shows as 0%.</li>
+<li>There are some code smells.</li>
+</ul>
+<p>For coverage I know PyPDFForm as a project has 100% coverage since I have introduced Codecov as part of my CI pipeline. For Sonar all I need to do is to upload my coverage data. This means I need to run another scan while specifying where Sonar should upload my coverage file.</p>
+<p>So first of all let me re-run tests and generate a new coverage file:</p>
+<p><img src="/2023/05/15/sonar-blog-1/12.png"></p>
+<p>After that my new Sonar scanner command looks like this:</p>
+<p><img src="/2023/05/15/sonar-blog-1/13.png"></p>
+<p>Here I introduced another option <code>-Dsonar.python.coverage.reportPaths</code> which tells Sonar the location of my coverage file. For more information about test coverage on Sonar please read <a target="_blank" rel="noopener" href="https://docs.sonarqube.org/latest/analyzing-source-code/test-coverage/overview/">here</a>.</p>
+<p>Execute the command, wait until the scan finishes, and now let’s look at the dashboard:</p>
+<p><img src="/2023/05/15/sonar-blog-1/14.png"></p>
+<p>Now the coverage is no longer 0%, but instead of the expected 100% it shows 57%.</p>
+<p>Let’s look into why this is the case by clicking on the <code>Code</code> tab of the dashboard.</p>
+<p><img src="/2023/05/15/sonar-blog-1/15.png"></p>
+<p>And here I found out why. It looks like the main package of <code>PyPDFForm</code> does have 100% coverage. It’s just that Sonar scanned some other files which are neither covered nor intended to be covered.</p>
+<p>This means I will have to exclude certain files from my Sonar scans. Let’s modify my Sonar scanner command one more time:</p>
+<p><img src="/2023/05/15/sonar-blog-1/16.png"></p>
+<p>Here I added the option <code>-Dsonar.exclusions</code> which tells Sonar some files or directories I would like to exclude from the scan.</p>
+<p>Execute the command and let’s look at the dashboard again:</p>
+<p><img src="/2023/05/15/sonar-blog-1/17.png"></p>
+<p>Finally the coverage is 100%. But there are still 4 code smells shown on the dashboard. Let’s take a look at them by clicking on the <code>Issues</code> tab.</p>
+<p><img src="/2023/05/15/sonar-blog-1/18.png"></p>
+<p>So all 4 code smells seem to point to the same thing, which is some of my functions could use some refactoring to reduce cognitive complexity. This is mostly due to complex logic such as too many if else blocks within a single function. For example:</p>
+<p><img src="/2023/05/15/sonar-blog-1/19.png"></p>
+<p>However, Sonar gave it a maintainability score of <code>A</code>, which seems to indicate it’s nothing major. On top of that reducing complexity of functions is something I have been continuously doing anyway while working on PyPDFForm.</p>
+<p><img src="/2023/05/15/sonar-blog-1/20.png"></p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>Overall I’d say the outcome of Sonar analysis against PyPDFForm is excellent. It is a pleasure to know that all the previous effort I put into code quality assurance is recognized by the community loved static analysis tool. I would also recommend anyone who reads this blog give SonarQube a try as it is a great tool and will make your code much cleaner.</p>
+
+      
+    </div>
+    
+    
+    <div class="article-category">
+      
+      
+      
+        <b>Tags:</b>
+        <a class="article-tag-none-link" href="/tags/Coding/" rel="tag">Coding</a>, <a class="article-tag-none-link" href="/tags/Sonar/" rel="tag">Sonar</a>, <a class="article-tag-none-link" href="/tags/Static-Analysis/" rel="tag">Static Analysis</a>
+      
+    </div>
+    
+    
+  </div>
+</article>
+
+  
+<nav id="article-nav" class="article-nav">
+  
+    <span id="article-nav-newer" class="article-nav-link-wrap newer"></span>
+  
+  
+    <a href="/2023/05/04/vim-blog-3/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          Vim as Primary IDE - Basic Editing
+        
+      </div>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+</body>
+</html>
