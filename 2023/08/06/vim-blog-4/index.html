@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://chinapandaman.github.io/2023/08/06/vim-blog-4/2.png">
 <meta property="og:image" content="https://chinapandaman.github.io/2023/08/06/vim-blog-4/3.png">
 <meta property="article:published_time" content="2023-08-06T15:13:47.000Z">
-<meta property="article:modified_time" content="2023-08-06T18:29:50.287Z">
+<meta property="article:modified_time" content="2023-08-06T18:37:30.799Z">
 <meta property="article:author" content="Jinge Li">
 <meta property="article:tag" content="Coding">
 <meta property="article:tag" content="IDE">
@@ -92,7 +92,9 @@
       
       
         <h3 id="Thank-You-Bram"><a href="#Thank-You-Bram" class="headerlink" title="Thank You Bram"></a>Thank You Bram</h3><p>Before I start this blog today, please allow me to express my deepest grieving to Mr. Bram Moolenaar, the author of Vim who just left us forever. Without your work many of us developers will never have the opportunity of using such a great tool that boosts our efficiency. You, like many other contributors, are the true martyr to the spirit of open source.</p>
-<h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><p>A buffer is an area of Vim’s memory used to hold text read from a file. Buffers are what allow Vim to edit multiple files simultaneously and switch between each of them. In this blog, I will be talking about some plugins and configs that make editing buffers of Vim an experience similar to a modern IDE.</p>
+<h3 id="Buffer-Intro"><a href="#Buffer-Intro" class="headerlink" title="Buffer Intro"></a>Buffer Intro</h3><p>A buffer is an area of Vim’s memory used to hold text read from a file. Buffers are what allow Vim to edit multiple files simultaneously and switch between each of them. In this blog, I will be talking about some plugins and configs that make editing buffers of Vim an experience similar to a modern IDE.</p>
+<span id="more"></span>
+
 <h3 id="Tabs"><a href="#Tabs" class="headerlink" title="Tabs"></a>Tabs</h3><p>Pretty much all modern IDEs have a tabline at the top of their UI. Whenever we open a new file it adds a new tab to it. We can navigate through files we opened by navigating through different tabs. Vim’s buffer plays a similar role, except with its default behavior we will need to use commands like <code>:buffers</code> or <code>:ls</code> to know what each buffer holds and then navigate from there. Is there an easier way?</p>
 <p>Luckily, one of Vim’s most popular plugins, <a target="_blank" rel="noopener" href="https://github.com/vim-airline/vim-airline">vim-airline</a>, provides a very neat tabline. We can install the plugin like this:</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> plug#begin()</span><br><span class="line">    <span class="comment">&quot; other plugins</span></span><br><span class="line">    Plug <span class="string">&#x27;vim-airline/vim-airline&#x27;</span></span><br><span class="line"><span class="keyword">call</span> plug#end()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:airline_powerline_fonts</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
