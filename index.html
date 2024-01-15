@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Jinge Li">
 <meta property="article:tag" content="Coding, Tech">
-<meta name="twitter:card" content="summary"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Jinge Li's Blog" type="application/atom+xml">
+<meta name="twitter:card" content="summary"><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Jinge Li's Blog" type="application/atom+xml">
 </head>
 
 <body>
@@ -62,6 +62,46 @@
 
     <div id="content">
       
+  
+    <article id="post-pypdfform-blog-1" class="article article-type-post" itemprop="blogPost" itemscope>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 class="article-title" itemprop="name">
+      <a href="/2024/01/15/pypdfform-blog-1/">CI/CD in PyPDFForm</a>
+      
+    </h2>
+  
+
+
+        <div class="article-meta">
+          <time class="article-date" datetime="2024-01-15T21:47:39.000Z" itemprop="datePublished">January 15, 2024, 3:47 PM</time>
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+        <h3 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h3><p>Happy new year fellow developers! The <a target="_blank" rel="noopener" href="https://youtu.be/8t1RdAKwr9w?si=AcsOtfFHjuuoVOXC">speak</a> I did at the Chicago Python User Group was a huge success and I hope everyone enjoyed it. I’d like to start a series of blogs which will cover a number of subjects related to <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm">PyPDFForm</a>. These subjects will hopefully cover some of the more in depth technical details that I didn’t get to cover during my speak.</p>
+<p>In this first blog, I want to talk about all the CI&#x2F;CD pipelines I have set up for the project that ensured its stability and automation. These pipelines are also in my opinion quite general purpose and can be used by any Python project in the future.</p>
+      
+    </div>
+    
+      <div class="article-more-link">
+        <a href="/2024/01/15/pypdfform-blog-1/#more">read more</a>
+      </div>
+    
+    
+    
+  </div>
+</article>
+
+
+
   
     <article id="post-chipy-blog-1" class="article article-type-post" itemprop="blogPost" itemscope>
   <div class="article-inner">
@@ -220,51 +260,6 @@
     
       <div class="article-more-link">
         <a href="/2023/05/04/vim-blog-3/#more">read more</a>
-      </div>
-    
-    
-    
-  </div>
-</article>
-
-
-
-  
-    <article id="post-vim-blog-2" class="article article-type-post" itemprop="blogPost" itemscope>
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 class="article-title" itemprop="name">
-      <a href="/2023/05/02/vim-blog-2/">Vim as Primary IDE - Boilerplate</a>
-      
-    </h2>
-  
-
-
-        <div class="article-meta">
-          <time class="article-date" datetime="2023-05-02T22:52:55.000Z" itemprop="datePublished">May 2, 2023, 5:52 PM</time>
-
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-        <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>Before I start, make sure to checkout <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/vim-config">the GitHub repository</a> which contains all the configs and scripts I will be covering in this series of blogs.</p>
-<h3 id="Plugin-Managing"><a href="#Plugin-Managing" class="headerlink" title="Plugin Managing"></a>Plugin Managing</h3><p>To make Vim as beefy as an IDE, it is not possible without plugins, at least for me. Vim has a large and active community and there are thousands of plugins out there that can boost my developing experience.</p>
-<p>To install plugins I will first need a plugin manager. In my case the plugin manager I picked is <a target="_blank" rel="noopener" href="https://github.com/junegunn/vim-plug">vim-plug</a>.</p>
-<p>Installing vim-plug is quite simple:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
-
-<p>The actual usage of vim-plug revolves around modifying my <code>.vimrc</code> file. The below snippet exists at the very top of it:</p>
-      
-    </div>
-    
-      <div class="article-more-link">
-        <a href="/2023/05/02/vim-blog-2/#more">read more</a>
       </div>
     
     

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CI/CD in PyPDFForm | Jinge Li&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+  
+  <meta name="description" content="PrefaceHappy new year fellow developers! The speak I did at the Chicago Python User Group was a huge success and I hope everyone enjoyed it. I’d like to start a series of blogs which will cover a numb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CI&#x2F;CD in PyPDFForm">
+<meta property="og:url" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/index.html">
+<meta property="og:site_name" content="Jinge Li&#39;s Blog">
+<meta property="og:description" content="PrefaceHappy new year fellow developers! The speak I did at the Chicago Python User Group was a huge success and I hope everyone enjoyed it. I’d like to start a series of blogs which will cover a numb">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/1.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/2.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/3.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/4.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/5.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/6.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/7.png">
+<meta property="og:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/8.png">
+<meta property="article:published_time" content="2024-01-15T21:47:39.000Z">
+<meta property="article:modified_time" content="2024-01-15T21:47:35.263Z">
+<meta property="article:author" content="Jinge Li">
+<meta property="article:tag" content="Coding">
+<meta property="article:tag" content="PyPDFForm">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chinapandaman.github.io/2024/01/15/pypdfform-blog-1/1.png"><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Jinge Li's Blog" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1 id="title">
+    <a href="/">Jinge Li&#39;s Blog</a>
+  </h1>
+  <nav>
+    
+    
+      
+      <a class="nav-link" href="/">Home</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" href="/archives">Archives</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" target="_blank" rel="noopener" href="https://github.com/chinapandaman">GitHub</a>
+    
+      
+        <span class="nav-spacer">×</span>
+      
+      <a class="nav-link" href="/atom.xml">RSS</a>
+    
+    
+  </nav>
+</header>
+
+    <div id="content">
+      <article id="post-pypdfform-blog-1" class="article article-type-post" itemprop="blogPost" itemscope>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 class="article-title" itemprop="headline name">
+      CI/CD in PyPDFForm
+    </h2>
+  
+
+
+        <div class="article-meta">
+          <time class="article-date" datetime="2024-01-15T21:47:39.000Z" itemprop="datePublished">January 15, 2024, 3:47 PM</time>
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+        <h3 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h3><p>Happy new year fellow developers! The <a target="_blank" rel="noopener" href="https://youtu.be/8t1RdAKwr9w?si=AcsOtfFHjuuoVOXC">speak</a> I did at the Chicago Python User Group was a huge success and I hope everyone enjoyed it. I’d like to start a series of blogs which will cover a number of subjects related to <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm">PyPDFForm</a>. These subjects will hopefully cover some of the more in depth technical details that I didn’t get to cover during my speak.</p>
+<p>In this first blog, I want to talk about all the CI&#x2F;CD pipelines I have set up for the project that ensured its stability and automation. These pipelines are also in my opinion quite general purpose and can be used by any Python project in the future.</p>
+<span id="more"></span>
+
+<h3 id="Test-Automation"><a href="#Test-Automation" class="headerlink" title="Test Automation"></a>Test Automation</h3><p>PyPDFForm uses GitHub actions for all its CI&#x2F;CD pipelines. When it comes to continuous integration, the first one that pretty much any project should have is build and test automation. PyPDFForm implements <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/tree/master/tests">all its tests</a> using <a target="_blank" rel="noopener" href="https://pypi.org/project/pytest/">pytest</a> and since Python is an interpreted language it doesn’t need a lot of build steps other than downloading dependencies. The <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-package.yml">following action</a> defines the pipeline for PyPDFForm’s test automation:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Tests</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.os</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">matrix:</span></span><br><span class="line">        <span class="attr">os:</span> [<span class="string">ubuntu-latest</span>, <span class="string">windows-latest</span>, <span class="string">macos-latest</span>]</span><br><span class="line">        <span class="attr">python-version:</span> [<span class="number">3.7</span>, <span class="number">3.8</span>, <span class="number">3.9</span>, <span class="string">&quot;3.10&quot;</span>, <span class="number">3.11</span>, <span class="number">3.12</span>]</span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">        pip install -r requirements.txt</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Test</span> <span class="string">with</span> <span class="string">pytest</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">pytest</span></span><br></pre></td></tr></table></figure>
+
+<p>Let’s look at this block by block to get a better understanding of it. First:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br></pre></td></tr></table></figure>
+
+<p>This chunk defines the condition that triggers this action. In this case we want to run our tests when there’s a PR created or if a commit is made directly towards the <code>master</code> branch.</p>
+<p>This next section defines all the environments that the tests should be run on:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runs-on:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.os</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">strategy:</span></span><br><span class="line">  <span class="attr">matrix:</span></span><br><span class="line">    <span class="attr">os:</span> [<span class="string">ubuntu-latest</span>, <span class="string">windows-latest</span>, <span class="string">macos-latest</span>]</span><br><span class="line">    <span class="attr">python-version:</span> [<span class="number">3.7</span>, <span class="number">3.8</span>, <span class="number">3.9</span>, <span class="string">&quot;3.10&quot;</span>, <span class="number">3.11</span>, <span class="number">3.12</span>]</span><br></pre></td></tr></table></figure>
+
+<p>GitHub action has a very nice way of defining environments with the matrix strategy. In this case I would like to test PyPDFForm on all three operating systems. For each os I want to test  all the currently supported Python versions. Overall these environment definitions will kick off 3x6&#x3D;18 different builds when this action is invoked.</p>
+<p><img src="/2024/01/15/pypdfform-blog-1/1.png"></p>
+<p>Now the actual pipeline itself is divided into four steps. The first two steps simply checkout the source code and setup the Python environment, both of which use other existed actions:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">  <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">python-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>Note the <code>python-version</code> references the <code>python-verion</code> environment definition from the matrix.</p>
+<p>The next step is to install the dependencies. Python unlike some other compiled languages doesn’t need a build process most of the time. So a simple <code>pip install</code> is enough for this step:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">    pip install -r requirements.txt</span></span><br></pre></td></tr></table></figure>
+
+<p>And finally we get to actually run the tests, which is just a simple <code>pytest</code> command:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Test</span> <span class="string">with</span> <span class="string">pytest</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">pytest</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/01/15/pypdfform-blog-1/2.png"></p>
+<p>Now we have a pretty standard action for running automated tests.</p>
+<h3 id="Code-Coverage"><a href="#Code-Coverage" class="headerlink" title="Code Coverage"></a>Code Coverage</h3><p>The action for code coverage generation used to be part of the test automation action discussed in the last section. It was changed and became its own action in <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/pull/397">this PR</a>.</p>
+<p>The reason behind this is exactly what the title of the PR says. It is meant to reduce the number of times code coverage is uploaded to Codecov. There seems to be an issue either on GitHub or Codecov where too many coverage uploads will start causing API rate limits, described in <a target="_blank" rel="noopener" href="https://github.com/codecov/feedback/issues/126">this issue</a>.</p>
+<p>With the old way, every time the test action is run there will be eighteen submissions of coverage to Codecov and it has caused me the above issue. So now code coverage is its own separate <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-coverage.yml">action</a>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Coverage</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">        pip install -r requirements.txt</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Test</span> <span class="string">with</span> <span class="string">pytest</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        coverage run -m pytest</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Upload</span> <span class="string">coverage</span> <span class="string">to</span> <span class="string">Codecov</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">codecov/codecov-action@v3</span></span><br></pre></td></tr></table></figure>
+
+<p>This action is very similar to the test automation action, with two major differences. First:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">  <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>With the above environment definition, this action will only run once on the latest version of Ubuntu, using the latest version of Python. This means it will only upload the code coverage once, having a much less chance of triggering the rate limits.</p>
+<p>And finally there’s an extra step after the tests are run that uploads the coverage to Codecov:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Upload</span> <span class="string">coverage</span> <span class="string">to</span> <span class="string">Codecov</span></span><br><span class="line">  <span class="attr">uses:</span> <span class="string">codecov/codecov-action@v3</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/01/15/pypdfform-blog-1/3.png"></p>
+<p>It is also worth noting that PyPDFForm does integrate the Codecov GitHub app to better work with this action.</p>
+<p><img src="/2024/01/15/pypdfform-blog-1/4.png"></p>
+<p>In the future if the rate limiting issue does get resolved, this action will likely be re-merged back to the test automation action.</p>
+<h3 id="Code-Formatting"><a href="#Code-Formatting" class="headerlink" title="Code Formatting"></a>Code Formatting</h3><p>PyPDFForm uses two methods to ensure code quality. The first one is the automated code formatting action. Python has two great code formatting tools: <a target="_blank" rel="noopener" href="https://pypi.org/project/black/">black</a> which formats all Python files in your source code, and <a target="_blank" rel="noopener" href="https://pycqa.github.io/isort/">isort</a> which fixes all your import orders.</p>
+<p>PyPDFForm makes use of <code>black</code> and <code>isort</code> with the following <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-black-isort.yml">action</a>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Code</span> <span class="string">Formatting</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.BLACK_ISORT_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">black/isort</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">black</span> <span class="string">isort</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">If</span> <span class="string">needed,</span> <span class="string">commit</span> <span class="string">black/isort</span> <span class="string">changes</span> <span class="string">to</span> <span class="string">the</span> <span class="string">pull</span> <span class="string">request</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          black .</span></span><br><span class="line"><span class="string">          isort .</span></span><br><span class="line"><span class="string">          git config --global user.name &#x27;black-isort-bot&#x27;</span></span><br><span class="line"><span class="string">          git config --global user.email &#x27;bot@domain.com&#x27;</span></span><br><span class="line"><span class="string">          git diff --quiet &amp;&amp; git diff --staged --quiet || git commit -am &#x27;[skip ci]: black/isort&#x27;</span></span><br><span class="line"><span class="string">          git push</span></span><br></pre></td></tr></table></figure>
+
+<p>Unlike the test automation action, this action only runs when a commit is made to the <code>master</code> branch:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br></pre></td></tr></table></figure>
+
+<p>This is to ensure that none of the automated formatting will mess up diffs between branches and <code>master</code> in PRs.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.BLACK_ISORT_TOKEN</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>The checkout source code step of the pipeline now makes use of a secret token called <code>BLACK_ISORT_TOKEN</code>. This is actually a GitHub developer token of mine stored under the repository’s secrets. We will talk about why it’s needed later on.</p>
+<p>To actually use <code>black</code> and <code>isort</code>, obviously they will need to be installed:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">black/isort</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">black</span> <span class="string">isort</span></span><br></pre></td></tr></table></figure>
+
+<p>And finally, the following chunk gets executed:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">If</span> <span class="string">needed,</span> <span class="string">commit</span> <span class="string">black/isort</span> <span class="string">changes</span> <span class="string">to</span> <span class="string">the</span> <span class="string">pull</span> <span class="string">request</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    black .</span></span><br><span class="line"><span class="string">    isort .</span></span><br><span class="line"><span class="string">    git config --global user.name &#x27;black-isort-bot&#x27;</span></span><br><span class="line"><span class="string">    git config --global user.email &#x27;bot@domain.com&#x27;</span></span><br><span class="line"><span class="string">    git diff --quiet &amp;&amp; git diff --staged --quiet || git commit -am &#x27;[skip ci]: black/isort&#x27;</span></span><br><span class="line"><span class="string">    git push</span></span><br></pre></td></tr></table></figure>
+
+<p>In this step, the following happens in order:</p>
+<ol>
+<li><code>black</code> is run on all Python files.</li>
+<li><code>isort</code> is run on all Python files.</li>
+<li>Some <code>git</code> configurations are set so that a commit can be made.</li>
+<li>Two <code>git diff</code> commands are run to determine if any file is modified as a result of <code>black</code> or <code>isort</code>. If so a new commit is made with modified files.</li>
+<li>The commit is pushed to <code>master</code>.</li>
+</ol>
+<p>Note the commit message starts with <code>[skip ci]</code>. This way it will not trigger any new action after being pushed to <code>master</code>. This is intended as this commit only has code formatting changes.</p>
+<p>Now you can see why the GitHub developer token needs to be setup when we initially checkout the source code. The credential is needed when we push the code formatting changes back to <code>master</code>.</p>
+<p><img src="/2024/01/15/pypdfform-blog-1/5.png"><br><img src="/2024/01/15/pypdfform-blog-1/6.png"></p>
+<p>Above you can see an example that shows the outcome of this action.</p>
+<h3 id="Static-Analysis"><a href="#Static-Analysis" class="headerlink" title="Static Analysis"></a>Static Analysis</h3><p>In conjunction with the code formatting action, the following <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-linting.yml">action</a> utilizes <a target="_blank" rel="noopener" href="https://pypi.org/project/pylint/#:~:text=Pylint%20is%20a%20static%20code,code%20without%20actually%20running%20it.">pylint</a> to statically analyze the project to cover some loopholes <code>black</code> might miss:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Linting</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">master</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">        pip install -r requirements.txt</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Analyze</span> <span class="string">code</span> <span class="string">with</span> <span class="string">pylint</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">pylint</span> <span class="string">PyPDFForm</span></span><br></pre></td></tr></table></figure>
+
+<p>This action is 90% the same as the test automation action except the following:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Analyze</span> <span class="string">code</span> <span class="string">with</span> <span class="string">pylint</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">pylint</span> <span class="string">PyPDFForm</span></span><br></pre></td></tr></table></figure>
+
+<p>Instead of running tests with <code>pytest</code>, it runs <code>pylint</code> on the source code for a static analysis.</p>
+<p><img src="/2024/01/15/pypdfform-blog-1/7.png"></p>
+<p><code>pylint</code>, paired up with <code>black</code> and <code>isort</code>, will ensure that PyPDFForm always has a clean, but more importantly a unified code style, regardless how each developer’s own coding style varies.</p>
+<h3 id="Deploy"><a href="#Deploy" class="headerlink" title="Deploy"></a>Deploy</h3><p>So far we have only covered continuous integrations of PyPDFForm. It’s time to talk about the <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/.github/workflows/python-publish.yml">action</a> that allows it to be continuously deployed:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">release:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">created</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">deploy:</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v4</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">        pip install setuptools wheel twine</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">deploy</span> <span class="string">to</span> <span class="string">PyPI</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">TWINE_USERNAME:</span> <span class="string">__token__</span></span><br><span class="line">        <span class="attr">TWINE_PASSWORD:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.PYPI_PASSWORD</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        python setup.py sdist bdist_wheel</span></span><br><span class="line"><span class="string">        twine upload dist/*</span></span><br></pre></td></tr></table></figure>
+
+<p>This action, unlike any other action we have discussed so far, is triggered when a <strong>release</strong> is made:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">release:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">created</span>]</span><br></pre></td></tr></table></figure>
+
+<p>The first few steps of the pipeline is quite similar to the other ones, checkout the source, setup Python, etc. The part we care about starts here:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    python -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">    pip install setuptools wheel twine</span></span><br></pre></td></tr></table></figure>
+
+<p>The above will install <code>setuptools</code>, <code>wheel</code>, and <code>twine</code>, all of which are dependencies we need to package and deploy our projects.</p>
+<p>Finally, this is where the actual deployment happens:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">deploy</span> <span class="string">to</span> <span class="string">PyPI</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="attr">TWINE_USERNAME:</span> <span class="string">__token__</span></span><br><span class="line">    <span class="attr">TWINE_PASSWORD:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.PYPI_PASSWORD</span> <span class="string">&#125;&#125;</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    python setup.py sdist bdist_wheel</span></span><br><span class="line"><span class="string">    twine upload dist/*</span></span><br></pre></td></tr></table></figure>
+
+<p>It first packages the project based on the <a target="_blank" rel="noopener" href="https://github.com/chinapandaman/PyPDFForm/blob/master/setup.py">setup.py</a> following <a target="_blank" rel="noopener" href="https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#packaging-your-project">this guide</a>, and then uploads the packaged files to PyPI.</p>
+<p>Note that this step uses two environment variables: <code>TWINE_USERNAME</code> which is set to <code>__token__</code>, and <code>TWINE_PASSWORD</code> which references a secret called <code>PYPI_PASSWORD</code>. These two variables configure the credential needed for PyPI and are what allow the final upload to happen.</p>
+<p><img src="/2024/01/15/pypdfform-blog-1/8.png"></p>
+<p>It is also worth noting that this step will need to be changed soon, as packaging by calling <code>setup.py</code> directly is <a target="_blank" rel="noopener" href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html">deprecated</a>.</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>Some of these actions were created from a while ago and it is quite possible that GitHub actions and Python suggest new best practices. But I think this article highlights a skeleton of how some CI&#x2F;CDs can be done for Python projects and I hope anyone who is reading find this helpful.</p>
+
+      
+    </div>
+    
+    
+    <div class="article-category">
+      
+      
+      
+        <b>Tags:</b>
+        <a class="article-tag-none-link" href="/tags/CI-CD/" rel="tag">CI/CD</a>, <a class="article-tag-none-link" href="/tags/Coding/" rel="tag">Coding</a>, <a class="article-tag-none-link" href="/tags/PyPDFForm/" rel="tag">PyPDFForm</a>
+      
+    </div>
+    
+    
+  </div>
+</article>
+
+  
+<nav id="article-nav" class="article-nav">
+  
+    <span id="article-nav-newer" class="article-nav-link-wrap newer"></span>
+  
+  
+    <a href="/2023/11/06/chipy-blog-1/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          ChiPy Speak Script
+        
+      </div>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+</body>
+</html>
