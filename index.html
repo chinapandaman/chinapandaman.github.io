@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="./img/reimu.jpg">
+    <title>chinapandaman</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Courier;
+            line-height: 1.6;
+            color: #ffffffcc;
+            background-color: #333;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 1rem 1rem 1rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: courier;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        h1 { text-align: center; font-weight: 300; font-size: 3rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+
+        h1 img {
+            width: 30%;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: orange;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-top: 1px solid;
+        }
+
+        span.link-prev {
+            float: left;
+        }
+
+        span.link-next {
+            float: right;
+            clear: right;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            h3 { font-size: 1.375rem; }
+            h4 { font-size: 1.125rem; }
+
+            p {
+                font-size: 0.95rem;
+            }
+        }
+        #avatar {
+            /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
+            /* background-image: url('https://i.sstatic.net/Dj7eP.jpg'); */
+            
+            /* make a square container */
+            /* width: 150px;
+            height: 150px; */
+
+            /* fill the container, preserving aspect ratio, and cropping to fit */
+            background-size: cover;
+
+            /* center the image vertically and horizontally */
+            background-position: top center;
+
+            /* round the edges to a circle with border radius 1/2 container size */
+            border-radius: 50%;
+            float: left;
+
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <hr>
+        <h1>chinapandaman<sup>*</sup></h1>
+        <hr>
+        <br>
+        <img id="avatar" src="./img/reimu.jpg" height="250px" width="250px" style="background-color: #ccc;">
+        <div>
+            <p>
+                Hi, I'm Ben, a random person who enjoys gaming, sleeping, and traveling the world. I also know a bit about coding...you know, I kinda do it for a living.
+            </p>
+
+            <p>
+                I spend my spare time <a href="https://github.com/chinapandaman/">building open source projects</a>, and making the community a less sloppy place. My most successful project is <a href="https://chinapandaman.github.io/PyPDFForm/">PyPDFForm</a>.
+            </p>
+
+            <p>
+                Hope you enjoy this site and the rest of your day.<br />
+                Cheers!&nbsp;🍺
+            </p>
+        </div>
+        <p style="text-align: center; margin-top: 60px"><sub><em>* Not a literal panda. But guaranteed to be lovely.</em></sub></p>
+    </main>
+
+
+<script>
+    const avatar = document.getElementById("avatar");
+
+    // This handler will be executed only once when the cursor
+    // moves over the unordered list
+    avatar.addEventListener(
+    "mouseover",
+    (event) => {
+        event.target.src = "./img/ben.jpg";
+    },
+    false,
+    );
+
+    // This handler will be executed every time the cursor
+    // is moved over a different list item
+    avatar.addEventListener(
+    "mouseout",
+    (event) => {
+        event.target.src = "./img/reimu.jpg";
+    },
+    false,
+    );
+</script></body></html>
